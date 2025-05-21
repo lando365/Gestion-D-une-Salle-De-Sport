@@ -111,6 +111,30 @@ import interactionPlugin from '@fullcalendar/interaction';
 import frLocale from '@fullcalendar/core/locales/fr';
 import { Modal } from 'bootstrap';
 import axios from 'axios';
+import api from '@/config/api';
+
+export default {
+  setup() {
+    const members = ref([]);
+
+    const fetchMembers = async () => {
+      try {
+        const response = await api.get('/members');
+        members.value = response.data.data;
+      } catch (error) {
+        console.error('Erreur lors du chargement des membres :', error);
+      }
+    };
+
+    onMounted(() => {
+      fetchMembers();
+    });
+
+    return {
+      members,
+    };
+  }
+};
 
 // Refs
 const calendarEl = ref(null);
