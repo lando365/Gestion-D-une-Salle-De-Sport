@@ -99,6 +99,30 @@ import { ref, onMounted, computed } from 'vue';
 import { useAuthStore } from '../../stores/auth';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import api from '@/config/api';
+
+export default {
+  setup() {
+    const members = ref([]);
+
+    const fetchMembers = async () => {
+      try {
+        const response = await api.get('/members');
+        members.value = response.data.data;
+      } catch (error) {
+        console.error('Erreur lors du chargement des membres :', error);
+      }
+    };
+
+    onMounted(() => {
+      fetchMembers();
+    });
+
+    return {
+      members,
+    };
+  }
+};
 
 // Store
 const authStore = useAuthStore();
